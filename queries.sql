@@ -62,7 +62,11 @@ CREATE TABLE IF NOT EXISTS candidates (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
   party VARCHAR(50),
+  photo_path VARCHAR(255),
+  biography TEXT,
+  list_name VARCHAR(100),
   description TEXT,
+  minority BOOLEAN DEFAULT FALSE,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   election_id INTEGER REFERENCES elections(id) ON DELETE CASCADE
@@ -71,6 +75,9 @@ CREATE TABLE IF NOT EXISTS candidates (
 CREATE TABLE IF NOT EXISTS station_results (
   id SERIAL PRIMARY KEY,
   votes INT NOT NULL CHECK (votes >= 0),
+  valid_votes INT NOT NULL CHECK (valid_votes >= 0),
+  invalid_votes INT NOT NULL CHECK (invalid_votes >= 0),
+  blank_votes INT NOT NULL CHECK (blank_votes >= 0),
   document_path VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
