@@ -17,9 +17,8 @@ export async function insertStations(stations) {
   const query = `
     INSERT INTO polling_stations (name, external_id, municipality_id)
     VALUES ${placeholders}
-    ON CONFLICT (external_id) DO NOTHING;
+    ON CONFLICT (external_id) DO NOTHING
+    RETURNING *;
   `;
-  // console.log(query)
-  await pool.query(query, values);
-  return stations.length;
+  return (await pool.query(query, values)).rows;
 }

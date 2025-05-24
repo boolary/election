@@ -19,8 +19,9 @@ export async function insertMunicipalities(municipalities) {
   const query = `
     INSERT INTO municipalities (name, external_id, region_id)
     VALUES ${placeholders}
-    ON CONFLICT (name) DO NOTHING;
+    ON CONFLICT (name) DO NOTHING
+    RETURNING *;
   `;
 
-  await pool.query(query, values);
+  return (await pool.query(query, values)).rows;
 }

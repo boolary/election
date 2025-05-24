@@ -1,0 +1,12 @@
+{
+  "method": "POST",
+  "headers": {
+    "User-Agent": "Mozilla/5.0",
+    "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "Referer": "https://www.rik.parlament.gov.rs/",
+    "Origin": "https://www.rik.parlament.gov.rs",
+    "X-Requested-With": "XMLHttpRequest",
+    "Cookie": "_gid=GA1.3.558585754.1746692429; PHPSESSID=dij0efk8chdjhhv8t5gvu3dunu; _gat_gtag_UA_102970116_1=1; _ga_RS9DKB7GVQ=GS2.1.s1746993578$o19$g1$t1746993579$j0$l0$h0; _ga=GA1.1.100815485.1742808843"
+  }
+}

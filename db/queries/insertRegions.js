@@ -20,8 +20,9 @@ export async function insertRegions(regions) {
   const query = `
     INSERT INTO regions (${columns.join(', ')})
     VALUES ${valuePlaceholders}
-    ON CONFLICT (name) DO NOTHING;
+    ON CONFLICT (name) DO NOTHING
+    RETURNING *;
   `;
 
-  await pool.query(query, values);
+  return (await pool.query(query, values)).rows;
 }

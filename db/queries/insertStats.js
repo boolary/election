@@ -23,8 +23,6 @@ export async function insertStats(stat) {
   ];
 
   try {
-    console.log(values);
-    console.log(query);
     await pool.query(query, values);
   } catch (error) {
     console.error('Error inserting stats:', error);
