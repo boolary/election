@@ -9,8 +9,9 @@ export async function insertStats(stat) {
       valid_votes,
       invalid_votes,
       polling_station_id,
-      election_id
-    ) VALUES ($1, $2, $3, $4, $5, $6)
+      election_id,
+      document_path
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7)
   `;
 
   const values = [
@@ -19,7 +20,8 @@ export async function insertStats(stat) {
     stat.valid_votes,
     stat.invalid_votes,
     stat.polling_station_id,
-    stat.election_id
+    stat.election_id,
+    stat.document_path
   ];
 
   try {

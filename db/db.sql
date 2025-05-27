@@ -59,6 +59,7 @@ CREATE TABLE IF NOT EXISTS polling_station_stats (
   votes INT NOT NULL CHECK (votes >= 0),
   valid_votes INT NOT NULL CHECK (valid_votes >= 0 AND valid_votes <= votes),
   invalid_votes INT NOT NULL CHECK (invalid_votes >= 0 AND invalid_votes <= (votes - valid_votes)),
+  document_path VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   polling_station_id INTEGER REFERENCES polling_stations(id) ON DELETE CASCADE,
   election_id INTEGER REFERENCES elections(id) ON DELETE CASCADE
@@ -81,7 +82,6 @@ CREATE TABLE IF NOT EXISTS candidates (
 CREATE TABLE IF NOT EXISTS station_results (
   id SERIAL PRIMARY KEY,
   votes INT NOT NULL CHECK (votes >= 0),
-  document_path VARCHAR(255) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   election_id INTEGER REFERENCES elections(id) ON DELETE CASCADE,

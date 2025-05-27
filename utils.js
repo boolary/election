@@ -19,4 +19,4 @@ export const reformatOption = ($) => {
 }
 
 
-export const regex = /<div class=['"]table-file active['"]>.*?<a href=['"]([^'"]+\.pdf)['"]/s;
+export const regex = /<div class=['"]table-file active['"]>.*?<a href=['"]([^'"]+\.pdf)['"]/si;

@@ -62,6 +62,7 @@ async function run() {
         const municipalities = await insertMunicipalities(extractedMunicipalities);
 
         for (const municipality of municipalities) {
+          console.log(municipality);
           await wait(1000);
           const scrapedStations = await scrapStations({
             election_type,
@@ -69,7 +70,9 @@ async function run() {
             election_region: region.external_id,
             election_municipality: municipality.external_id
           });
-          const stations = await insertStations(extractStations(scrapedStations.election_stations, municipality.id));
+          const extractedStations = extractStations(scrapedStations.election_stations, municipality.id);
+          console.log(extractedStations);
+          const stations = await insertStations(extractedStations);
           
           for (const station of stations) {
               await wait(1000);
@@ -82,10 +85,13 @@ async function run() {
                 election_station: parseInt(station.external_id, 10)
               });
             
-              const extractedStationsStats = extractStationStats(scrapedStats, station.id, 1);
+              const pdf = scrapedStats.minute_from_election_station?.match(regex);
+              const extractedStationsStats = extractStationStats(scrapedStats, station.id, 1,  pdf.length ? pdf[1] : '');
+              console.log(extractedStationsStats);
               await insertStats(extractedStationsStats);
 
-              const results = formatStationsResults(scrapedStats.table_data, station.id, 1, scrapedStats.minute_from_election_station.match(regex)[1]);
+              const results = formatStationsResults(scrapedStats.table_data, station.id, 1);
+              console.log(results);
               await insertResults(results);
           }
         }
@@ -118,26 +124,25 @@ function extractStations(raw, municipality) {
   }));
 }
 
-function extractStationStats(raw, polling_station_id, election_id) {
+function extractStationStats(raw, polling_station_id, election_id, document_path) {
   return {
     total_votes: parseInt(raw.stat_sum_numbers.total_voters.replace('.', ''), 10),
     votes: parseInt(raw.stat_sum_numbers.available.replace('.', ''), 10),
     valid_votes: raw.sum_config.data.datasets[0].data[0],
     invalid_votes: raw.sum_config.data.datasets[0].data[1],
     polling_station_id,
-    election_id
+    election_id,
+    document_path
   };
 }
 
-function formatStationsResults(raw, polling_station_id, election_id, document_path) {
+function formatStationsResults(raw, polling_station_id, election_id) {
   return raw.map(({ count_number, won_number, won_percent }) => ({
-    external_id: count_number,
     election_id,
     polling_station_id,
     candidate_id: count_number,
     votes: parseInt(won_number.replace('.', ''), 10),
-    percentage: won_percent,
-    document_path
+    percentage: won_percent
   }));
 }
 
